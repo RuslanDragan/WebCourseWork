@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вебсистема бронювання навчальних аудиторій — НУ «Одеська політехніка»</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Перейти до основного вмісту</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <div class="brand">
+                <span class="brand-badge" aria-hidden="true">ОП</span>
+                <div>
+                    <h1 class="site-title">Бронювання навчальних аудиторій</h1>
+                    <p class="site-subtitle">Кафедра інформаційних систем • Часовий пояс: Europe/Kyiv</p>
+                </div>
+            </div>
+
+            <nav class="main-nav" aria-label="Головна навігація">
+                <button type="button" class="nav-btn active" data-tab="catalog" id="tab-btn-catalog">
+                    Каталог і розклад
+                </button>
+                <button type="button" class="nav-btn" data-tab="my-bookings" id="tab-btn-my-bookings">
+                    Мої заявки
+                </button>
+                <button type="button" class="nav-btn hidden" data-tab="dispatcher" id="tab-btn-dispatcher">
+                    Панель диспетчера
+                </button>
+            </nav>
+
+            <div class="auth-bar" id="auth-bar">
+                <span class="user-pill" id="user-status-label">Гість (не автентифіковано)</span>
+                <button type="button" class="btn btn-outline" id="btn-open-login">Увійти</button>
+                <button type="button" class="btn btn-outline hidden" id="btn-logout">Вийти</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" class="container main-container">
+        <!-- Сповіщення про глобальні події / помилки / успіх -->
+        <div id="global-alert" class="alert hidden" role="status" aria-live="polite"></div>
+
+        <!-- Панель швидкої демонстрації для захисту курсової роботи -->
+        <section class="demo-toolbar" aria-label="Панель демонстраційних сценаріїв для захисту">
+            <div class="demo-toolbar-info">
+                <strong>Режим демонстрації (Варіант 17):</strong>
+                <span>Швидкий вхід під тестовими ролями або перевірка захисту чужих даних:</span>
+            </div>
+            <div class="demo-toolbar-actions">
+                <button type="button" class="btn btn-sm btn-secondary" data-quick-user="kovalenko" data-quick-pass="ApplicantPass2026!">
+                    Увійти: Заявник 1 (Коваленко)
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary" data-quick-user="bondarenko" data-quick-pass="ApplicantPass2026!">
+                    Увійти: Заявник 2 (Бондаренко)
+                </button>
+                <button type="button" class="btn btn-sm btn-secondary" data-quick-user="dispatcher" data-quick-pass="DispatcherPass2026!">
+                    Увійти: Диспетчер (Мельник)
+                </button>
+                <button type="button" class="btn btn-sm btn-warning" id="btn-test-foreign-access">
+                    Тест TC-ACCESS-02 (Чужа заявка)
+                </button>
+            </div>
+        </section>
+
+        <!-- ЕКРАН 1: КАТАЛОГ АУДИТОРІЙ І РОЗКЛАД СЛОТІВ -->
+        <section id="view-catalog" class="view-section">
+            <div class="section-header section-header-row">
+                <div>
+                    <h2>Пошук аудиторій та календар зайнятості</h2>
+                    <p>Оберіть дату, місткість, оснащення або перемкніться на тижневий календар (7 днів × 6 пар).</p>
+                </div>
+                <div class="view-mode-switch" role="group" aria-label="Режим відображення розкладу">
+                    <button type="button" class="btn btn-sm btn-primary" id="btn-mode-day" aria-pressed="true">
+                        На день (усі аудиторії)
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline" id="btn-mode-week" aria-pressed="false">
+                        Тижневий календар (7×6)
+                    </button>
+                </div>
+            </div>
+
+            <form id="filter-form" class="filter-bar" aria-label="Фільтри пошуку аудиторій і слотів">
+                <div class="form-group">
+                    <label for="filter-date" id="filter-date-label">Дата заняття</label>
+                    <input type="date" id="filter-date" name="date" required>
+                </div>
+                <div class="form-group hidden" id="filter-room-group">
+                    <label for="filter-room">Аудиторія для тижневого календаря</label>
+                    <select id="filter-room" name="roomId"></select>
+                </div>
+                <div class="form-group" id="filter-capacity-group">
+                    <label for="filter-capacity">Мін. місткість (місць)</label>
+                    <input type="number" id="filter-capacity" name="minCapacity" min="1" max="1000" placeholder="Напр. 25">
+                </div>
+                <div class="form-group" id="filter-equipment-group">
+                    <label for="filter-equipment">Оснащення</label>
+                    <select id="filter-equipment" name="equipment">
+                        <option value="">Усе оснащення</option>
+                        <option value="Проєктор">Проєктор</option>
+                        <option value="ПК">Комп'ютерний клас (ПК)</option>
+                        <option value="Інтерактивна дошка">Інтерактивна дошка</option>
+                        <option value="Мікрофон">Мікрофон</option>
+                        <option value="Мережеві стенди">Мережеві стенди</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-checkbox">
+                    <input type="checkbox" id="filter-available" name="onlyAvailable">
+                    <label for="filter-available">Лише вільні слоти</label>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Застосувати</button>
+                    <button type="button" class="btn btn-outline" id="btn-reset-filters">Скинути</button>
+                </div>
+            </form>
+
+            <!-- Стани екрана каталогу -->
+            <div id="catalog-loading" class="state-box hidden" aria-live="polite">
+                Завантаження розкладу аудиторій...
+            </div>
+            <div id="catalog-empty" class="state-box state-empty hidden" aria-live="polite">
+                <h3>За обраними критеріями аудиторій або слотів не знайдено</h3>
+                <p>Спробуйте зменшити мінімальну місткість або скинути фільтр оснащення.</p>
+            </div>
+
+            <div id="rooms-schedule-grid" class="rooms-grid" aria-live="polite"></div>
+            <div id="weekly-calendar-container" class="weekly-calendar hidden" aria-live="polite"></div>
+        </section>
+
+        <!-- ЕКРАН 2: ОСОБИСТИЙ СПИСОК ЗАЯВОК (МОЇ ЗАЯВКИ) -->
+        <section id="view-my-bookings" class="view-section hidden">
+            <div class="section-header">
+                <h2>Мої заявки на бронювання</h2>
+                <p>Історія поданих заявок, їхній поточний статус та можливість скасування активного бронювання.</p>
+            </div>
+
+            <div id="my-bookings-unauth" class="state-box state-warning hidden">
+                <h3>Необхідна автентифікація</h3>
+                <p>Увійдіть до системи як заявник або диспетчер, щоб переглядати власні бронювання.</p>
+            </div>
+
+            <div id="my-bookings-empty" class="state-box state-empty hidden">
+                <h3>У вас ще немає створених заявок</h3>
+                <p>Перейдіть до вкладки «Каталог і розклад» та оберіть вільний часовий слот.</p>
+            </div>
+
+            <div id="my-bookings-list" class="bookings-list"></div>
+        </section>
+
+        <!-- ЕКРАН 3: ПАНЕЛЬ ДИСПЕТЧЕРА -->
+        <section id="view-dispatcher" class="view-section hidden">
+            <div class="section-header">
+                <h2>Панель диспетчера навчального відділу</h2>
+                <p>Погодження й відхилення заявок, керування доступністю аудиторій та журнал аудиту рішень.</p>
+            </div>
+
+            <div class="subnav-tabs" role="tablist" aria-label="Розділи панелі диспетчера">
+                <button type="button" class="subnav-btn active" data-disp-tab="requests" id="disp-tab-requests" role="tab" aria-selected="true">
+                    Черга заявок
+                </button>
+                <button type="button" class="subnav-btn" data-disp-tab="rooms" id="disp-tab-rooms" role="tab" aria-selected="false">
+                    Доступність аудиторій
+                </button>
+                <button type="button" class="subnav-btn" data-disp-tab="audit" id="disp-tab-audit" role="tab" aria-selected="false">
+                    Журнал аудиту
+                </button>
+            </div>
+
+            <!-- Підрозділ 3.1: Черга заявок -->
+            <div id="disp-panel-requests" class="disp-panel">
+                <div class="filter-bar dispatcher-filter-bar">
+                    <div class="form-group">
+                        <label for="dispatcher-status-filter">Фільтр за статусом заявки</label>
+                        <select id="dispatcher-status-filter">
+                            <option value="">Усі статуси</option>
+                            <option value="PENDING">Очікують погодження (PENDING)</option>
+                            <option value="CONFIRMED">Підтверджені (CONFIRMED)</option>
+                            <option value="REJECTED">Відхилені (REJECTED)</option>
+                            <option value="CANCELLED">Скасовані (CANCELLED)</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" id="btn-refresh-dispatcher">Оновити список</button>
+                    </div>
+                </div>
+                <div id="dispatcher-bookings-list" class="bookings-list"></div>
+            </div>
+
+            <!-- Підрозділ 3.2: Керування доступністю аудиторій -->
+            <div id="disp-panel-rooms" class="disp-panel hidden">
+                <div id="dispatcher-rooms-error" class="alert alert-error hidden" role="alert"></div>
+                <div id="dispatcher-rooms-list" class="bookings-list"></div>
+            </div>
+
+            <!-- Підрозділ 3.3: Журнал аудиту -->
+            <div id="disp-panel-audit" class="disp-panel hidden">
+                <div class="filter-bar dispatcher-filter-bar">
+                    <div class="form-group">
+                        <label for="audit-entity-filter">Тип об'єкта події</label>
+                        <select id="audit-entity-filter">
+                            <option value="">Усі події</option>
+                            <option value="BOOKING">Заявки на бронювання</option>
+                            <option value="ROOM">Доступність аудиторій</option>
+                        </select>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" id="btn-refresh-audit">Оновити журнал</button>
+                    </div>
+                </div>
+                <div id="dispatcher-audit-table-wrap" class="table-responsive"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- МОДАЛЬНЕ ВІКНО: СТВОРЕННЯ ЗАЯВКИ ТА ПІДБІР АЛЬТЕРНАТИВ -->
+    <dialog id="booking-dialog" class="modal-dialog" aria-labelledby="booking-dialog-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="booking-dialog-title">Оформлення заявки на бронювання</h3>
+                <button type="button" class="btn-close" id="btn-close-booking-dialog" aria-label="Закрити вікно">&times;</button>
+            </div>
+
+            <div id="selected-slot-summary" class="slot-summary-box"></div>
+
+            <div id="booking-form-error" class="alert alert-error hidden" role="alert"></div>
+
+            <form id="create-booking-form" novalidate>
+                <input type="hidden" id="booking-slot-id" name="slotId">
+
+                <div class="form-group">
+                    <label for="booking-purpose">Мета використання аудиторії <span aria-hidden="true">*</span></label>
+                    <textarea
+                        id="booking-purpose"
+                        name="purpose"
+                        rows="3"
+                        required
+                        minlength="5"
+                        maxlength="500"
+                        placeholder="Напр.: Проведення лабораторного заняття з дисципліни «Веб-технології та веб-дизайн» для групи АІ-243"
+                    ></textarea>
+                    <small class="field-hint">Обов'язкове поле: від 5 до 500 символів. При помилці введені дані зберігаються.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="booking-attendees">Очікувана кількість учасників <span aria-hidden="true">*</span></label>
+                    <input
+                        type="number"
+                        id="booking-attendees"
+                        name="expectedAttendees"
+                        value="25"
+                        min="1"
+                        max="1000"
+                        required
+                    >
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary" id="btn-submit-booking">Надіслати заявку</button>
+                    <button type="button" class="btn btn-secondary" id="btn-find-alternatives">
+                        Підібрати найближчу альтернативу
+                    </button>
+                    <button type="button" class="btn btn-outline" id="btn-cancel-booking-modal">Закрити</button>
+                </div>
+            </form>
+
+            <!-- Блок результатів пошуку найближчої альтернативи (Погоджене ускладнення Варіанта 17) -->
+            <div id="alternatives-container" class="alternatives-box hidden" aria-live="polite">
+                <h4>Найближчі вільні альтернативи (ранжовані за індексом відповідності)</h4>
+                <div id="alternatives-list" class="alternatives-list"></div>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- МОДАЛЬНЕ ВІКНО: АВТЕНТИФІКАЦІЯ -->
+    <dialog id="login-dialog" class="modal-dialog" aria-labelledby="login-dialog-title">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="login-dialog-title">Вхід до вебсистеми</h3>
+                <button type="button" class="btn-close" id="btn-close-login-dialog" aria-label="Закрити вікно">&times;</button>
+            </div>
+
+            <div id="login-error" class="alert alert-error hidden" role="alert"></div>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Логін користувача</label>
+                    <input type="text" id="login-username" name="username" required autocomplete="username" value="kovalenko">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" name="password" required autocomplete="current-password" value="ApplicantPass2026!">
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Увійти</button>
+                    <button type="button" class="btn btn-outline" id="btn-cancel-login">Скасувати</button>
+                </div>
+            </form>
+        </div>
+    </dialog>
+
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <p>Курсова робота з дисципліни «Веб-технології та веб-дизайн» • Варіант 17 • Драган Р. О., група АІ-243</p>
+            <p><a href="/docs" target="_blank" rel="noopener">Контракт OpenAPI (Swagger UI)</a> • <a href="/api/health" target="_blank" rel="noopener">Перевірка стану (/api/health)</a></p>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

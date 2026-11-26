@@ -1,0 +1,858 @@
+/* Стандартизована адаптивна таблиця стилів (WCAG 2.2 AA, контрольні точки 360px, 768px, 1280px) */
+:root {
+    --bg-page: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-muted: #f1f5f9;
+    --text-main: #0f172a;
+    --text-secondary: #334155;
+    --border-color: #cbd5e1;
+    --primary: #1d4ed8;
+    --primary-hover: #1e40af;
+    --secondary: #0f766e;
+    --success-bg: #dcfce7;
+    --success-text: #14532d;
+    --success-border: #86efac;
+    --warning-bg: #fef3c7;
+    --warning-text: #78350f;
+    --warning-border: #fde68a;
+    --error-bg: #fee2e2;
+    --error-text: #7f1d1d;
+    --error-border: #fca5a5;
+    --focus-ring: #2563eb;
+    --radius: 8px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-main);
+    line-height: 1.5;
+    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body > * {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Доступність з клавіатури (WCAG 2.2) */
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 16px;
+    background: var(--primary);
+    color: #ffffff;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    z-index: 1000;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.skip-link:focus {
+    top: 12px;
+}
+
+:focus-visible {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Шапка сайту */
+.site-header {
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    padding: 14px 0;
+}
+
+.header-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
+.site-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.site-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+}
+
+.nav-btn:hover {
+    background: var(--bg-muted);
+    color: var(--text-main);
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.auth-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.user-pill {
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    background: var(--bg-muted);
+    border-radius: 999px;
+    color: var(--text-main);
+}
+
+/* Кнопки */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: background-color 0.15s ease;
+    text-decoration: none;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.85rem;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+}
+
+.btn-secondary {
+    background: var(--secondary);
+    color: #ffffff;
+}
+
+.btn-outline {
+    background: var(--bg-surface);
+    border-color: var(--border-color);
+    color: var(--text-main);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--bg-muted);
+}
+
+.btn-warning {
+    background: #b45309;
+    color: #ffffff;
+}
+
+.btn-danger {
+    background: #b91c1c;
+    color: #ffffff;
+}
+
+/* Основний контейнер */
+.main-container {
+    flex: 1;
+    padding-top: 20px;
+    padding-bottom: 40px;
+}
+
+.demo-toolbar {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.demo-toolbar-info {
+    font-size: 0.9rem;
+    color: #1e3a8a;
+}
+
+.demo-toolbar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* Сповіщення */
+.alert {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    border: 1px solid transparent;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border-color: var(--success-border);
+}
+
+.alert-error {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border-color: var(--error-border);
+}
+
+.alert-warning {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border-color: var(--warning-border);
+}
+
+.section-header {
+    margin-bottom: 16px;
+}
+
+.section-header h2 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+}
+
+.section-header p {
+    color: var(--text-secondary);
+}
+
+/* Панель фільтрів (CSS Grid) */
+.filter-bar {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 14px;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.form-group input[type="date"],
+.form-group input[type="number"],
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group select,
+.form-group textarea {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background: #ffffff;
+}
+
+.form-group-checkbox {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 8px;
+}
+
+.form-group-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.field-hint {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Картки аудиторій та слотів (CSS Grid) */
+.rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+    gap: 18px;
+}
+
+.room-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.room-card.room-inactive {
+    background: #f8fafc;
+    border-style: dashed;
+}
+
+.room-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.room-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.room-meta {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.badge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.badge-active {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.badge-inactive {
+    background: var(--error-bg);
+    color: var(--error-text);
+}
+
+.equipment-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.eq-tag {
+    background: var(--bg-muted);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    padding: 3px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.slots-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.slot-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background: #ffffff;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.84rem;
+}
+
+.slot-btn.slot-free {
+    border-left: 4px solid #16a34a;
+}
+
+.slot-btn.slot-free:hover {
+    background: #f0fdf4;
+}
+
+.slot-btn.slot-occupied {
+    border-left: 4px solid #dc2626;
+    background: #fef2f2;
+}
+
+.slot-btn.slot-disabled {
+    border-left: 4px solid #64748b;
+    background: #f1f5f9;
+    color: var(--text-secondary);
+}
+
+.slot-pair {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.slot-status-text {
+    font-size: 0.76rem;
+    margin-top: 2px;
+    font-weight: 600;
+}
+
+/* Стани (порожній, завантаження) */
+.state-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Список бронювань */
+.bookings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.booking-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.booking-card-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+
+.status-PENDING {
+    background: var(--warning-bg);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
+}
+
+.status-CONFIRMED {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.status-REJECTED,
+.status-CANCELLED {
+    background: var(--error-bg);
+    color: var(--error-text);
+    border: 1px solid var(--error-border);
+}
+
+.booking-history {
+    background: var(--bg-muted);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.booking-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Діалогові вікна (<dialog>) */
+.modal-dialog {
+    margin: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 0;
+    width: 92%;
+    max-width: 580px;
+    background: var(--bg-surface);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+.modal-dialog::backdrop {
+    background: rgba(15, 23, 42, 0.55);
+}
+
+.modal-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.btn-close {
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 2px 8px;
+}
+
+.slot-summary-box {
+    background: var(--bg-muted);
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 0.92rem;
+}
+
+.modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.alternatives-box {
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alt-item {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    background: #f8fafc;
+}
+
+.site-footer {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-color);
+    padding: 16px 0;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+.footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* Контрольні точки адаптивності (360px, 768px, 1280px) */
+.section-header-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.view-mode-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.dispatcher-comment-input,
+.room-reason-input {
+    padding: 7px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    min-width: 240px;
+    flex: 1 1 240px;
+    background: #ffffff;
+    color: var(--text-main);
+}
+
+.alt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.subnav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.subnav-btn {
+    padding: 8px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    background: var(--bg-surface);
+    color: var(--text-main);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.subnav-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+}
+
+.week-table,
+.audit-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 680px;
+    font-size: 0.88rem;
+}
+
+.week-table th,
+.week-table td,
+.audit-table th,
+.audit-table td {
+    border: 1px solid var(--border-color);
+    padding: 8px 10px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.week-table th,
+.audit-table th {
+    background: var(--bg-muted);
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.week-slot-cell {
+    min-width: 110px;
+}
+
+.week-slot-btn {
+    width: 100%;
+    padding: 6px 8px;
+    font-size: 0.8rem;
+}
+
+.conflict-list {
+    margin-top: 8px;
+    padding-left: 20px;
+    font-size: 0.88rem;
+}
+
+.room-reason-note {
+    color: var(--error-text);
+    font-size: 0.86rem;
+    font-weight: 500;
+}
+
+@media (max-width: 768px) {
+    .rooms-grid {
+        grid-template-columns: 1fr;
+    }
+    .slots-list {
+        grid-template-columns: 1fr;
+    }
+    .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .alt-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 520px) {
+    .container {
+        padding: 0 10px;
+    }
+    .site-header,
+    .main-container,
+    .site-footer,
+    .view-section,
+    .filter-bar,
+    .room-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    .brand,
+    .header-inner,
+    .section-header-row,
+    .demo-toolbar {
+        width: 100%;
+        max-width: 100%;
+    }
+    .brand > div,
+    .section-header-row > div,
+    .demo-toolbar-info,
+    .demo-toolbar-actions {
+        min-width: 0;
+        flex: 1 1 100%;
+    }
+    .site-title {
+        font-size: 1.02rem;
+        line-height: 1.25;
+        overflow-wrap: break-word;
+    }
+    .site-subtitle,
+    .section-header p,
+    .demo-toolbar-info {
+        font-size: 0.78rem;
+        overflow-wrap: break-word;
+    }
+    .btn {
+        white-space: normal;
+        max-width: 100%;
+    }
+    .view-mode-switch {
+        width: 100%;
+    }
+    .view-mode-switch .btn {
+        flex: 1 1 100%;
+    }
+    .filter-bar {
+        grid-template-columns: 1fr;
+        padding: 12px;
+    }
+    .form-group,
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        min-width: 0;
+        width: 100%;
+    }
+    .form-group-checkbox input[type="checkbox"] {
+        width: 18px;
+    }
+    .demo-toolbar {
+        padding: 10px 12px;
+    }
+    .demo-toolbar-actions .btn {
+        width: 100%;
+        justify-content: flex-start;
+        text-align: left;
+    }
+    .dispatcher-comment-input,
+    .room-reason-input {
+        min-width: 100%;
+    }
+}
